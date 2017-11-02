@@ -1,3 +1,7 @@
 #! /usr/bin/env sh
 
-echo $1 `crc32 $1`
+main() {
+    echo $1 `crc32 $1`
+}
+
+main "$1"
