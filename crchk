@@ -12,9 +12,14 @@ check_dependencies() {
     fi
 }
 
+verify() {
+    echo $1 `crc32 $1`
+}
+
 main() {
     check_dependencies
-    echo $1 `crc32 $1`
+
+    verify $1
 }
 
 
