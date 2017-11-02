@@ -1,2 +1,3 @@
 # crchk
-Verify files with CRC check
+
+Simple tool that uses CRC check in file name to detect corrupted files.
