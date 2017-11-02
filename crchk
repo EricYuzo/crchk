@@ -5,7 +5,15 @@ error() {
     exit 1
 }
 
+check_dependencies() {
+    `command -v crc32 > /dev/null`
+    if [ $? -ne 0 ] ; then
+        error "program crc32 missing."
+    fi
+}
+
 main() {
+    check_dependencies
     echo $1 `crc32 $1`
 }
 
