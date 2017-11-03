@@ -2,6 +2,7 @@
 
 error() {
     echo "$PROGRAM: $@" 1>&2
+    usage
     exit 1
 }
 
@@ -10,6 +11,10 @@ check_dependencies() {
     if [ $? -ne 0 ] ; then
         error "program crc32 missing."
     fi
+}
+
+usage() {
+    echo "Usage: $PROGRAM FILE..."
 }
 
 extract_crc() {
