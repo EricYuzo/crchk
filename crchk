@@ -1,4 +1,4 @@
-#! /usr/bin/env sh
+#! /usr/bin/env bash
 
 error() {
     echo "$PROGRAM: $@" 1>&2
@@ -49,6 +49,25 @@ verify() {
 
 main() {
     check_dependencies
+
+    # parse options {
+    positional=()
+    while [ $# -gt 0 ]
+    do
+        case $1 in
+            -h | --help )
+                showhelp
+                exit 0
+                ;;
+            *)
+                positional+=("$1")
+                ;;
+        esac
+        shift
+    done
+    set -- "${positional[@]}"
+    # }
+
 
     for f in "$@"
     do
