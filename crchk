@@ -13,7 +13,16 @@ check_dependencies() {
 }
 
 verify() {
-    echo $1 `crc32 $1`
+    name=$1
+    crc_name=`echo "$name" | tr '[A-F]' '[a-f]' | sed 's/.*\[\([0-9a-f]\{8\}\)\].*/\1/'`
+    crc_calc=`crc32 $1`
+    if [ "$crc_name" = "$crc_calc" ] ; then
+        status="ok"
+    else
+        status="corrupted"
+    fi
+
+    echo "$name    $crc_name    $crc_calc    $status"
 }
 
 main() {
