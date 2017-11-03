@@ -14,13 +14,17 @@ check_dependencies() {
 }
 
 usage() {
-    echo "Usage: $PROGRAM FILE..."
+    echo "Usage: $PROGRAM [OPTION]... FILE..."
+    echo "Try '$PROGRAM --help' for more information."
 }
 
 showhelp() {
-    echo "Usage: $PROGRAM FILE..."
+    echo "Usage: $PROGRAM [OPTION]... FILE..."
     echo
     echo "Check FILE integrity based on CRC-32."
+    echo
+    echo "Available options:"
+    echo "  -h, --help    display this help and exit"
 }
 
 extract_crc() {
