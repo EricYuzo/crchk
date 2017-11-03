@@ -17,6 +17,12 @@ usage() {
     echo "Usage: $PROGRAM FILE..."
 }
 
+showhelp() {
+    echo "Usage: $PROGRAM FILE..."
+    echo
+    echo "Check FILE integrity based on CRC-32."
+}
+
 extract_crc() {
     echo "$1" | grep -q '^.*[[({][0-9A-Fa-f]\{8\}[])}].*$'
     if [ $? -eq 0 ] ; then
