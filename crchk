@@ -22,9 +22,9 @@ extract_crc() {
 }
 
 verify() {
-    name=$1
-    crc_name=`extract_crc $name`
-    crc_calc=`crc32 $name`
+    name="$@"
+    crc_name=`extract_crc "$name"`
+    crc_calc=`crc32 "$name"`
     if [ "$crc_name" = "$crc_calc" ] ; then
         status="ok"
     elif [ "$crc_name" = "$not_found" ] ; then
