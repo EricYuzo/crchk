@@ -39,12 +39,15 @@ verify() {
 main() {
     check_dependencies
 
-    if [ -f "$1" ] ; then
-        verify $1
-    fi
+    for f in "$@"
+    do
+        if [ -f "$f" ] ; then
+            verify $f
+        fi
+    done
 }
 
 not_found='NA'
 PROGRAM=$(basename $0)
 
-main "$1"
+main "$@"
