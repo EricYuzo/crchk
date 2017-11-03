@@ -28,7 +28,9 @@ verify() {
 main() {
     check_dependencies
 
-    verify $1
+    if [ -f "$1" ] ; then
+        verify $1
+    fi
 }
 
 
