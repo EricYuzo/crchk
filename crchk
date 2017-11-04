@@ -64,7 +64,12 @@ verify() {
 process() {
     for f in "$@"
     do
-        if [ -f "$f" ] ; then
+        if [ -d "$f" ] ; then
+            if [[ "$f" == */ ]] ; then
+                f=${f%/*}
+            fi
+            process "$f"/*
+        elif [ -f "$f" ] ; then
             verify $f
         fi
     done
