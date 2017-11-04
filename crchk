@@ -24,7 +24,12 @@ showhelp() {
     echo "Check FILE integrity based on CRC-32."
     echo
     echo "Available options:"
-    echo "  -h, --help    display this help and exit"
+    echo "  -h, --help       display this help and exit"
+    echo "  -v, --version    display version information and exit"
+}
+
+showversion() {
+    echo "$PROGRAM $version"
 }
 
 extract_crc() {
@@ -68,6 +73,10 @@ main() {
                 showhelp
                 exit 0
                 ;;
+            -v | --version )
+                showversion
+                exit 0
+                ;;
             *)
                 positional+=("$1")
                 ;;
@@ -88,5 +97,6 @@ main() {
 
 not_found='NA'
 PROGRAM=$(basename $0)
+version="0.1.0"
 
 main "$@"
