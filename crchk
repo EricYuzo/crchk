@@ -61,6 +61,15 @@ verify() {
     echo "$name    $crc_name    $crc_calc    $status"
 }
 
+process() {
+    for f in "$@"
+    do
+        if [ -f "$f" ] ; then
+            verify $f
+        fi
+    done
+}
+
 main() {
     check_dependencies
 
@@ -86,13 +95,7 @@ main() {
     set -- "${positional[@]}"
     # }
 
-
-    for f in "$@"
-    do
-        if [ -f "$f" ] ; then
-            verify $f
-        fi
-    done
+    process "$@"
 }
 
 not_found='NA'
