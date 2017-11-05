@@ -15,6 +15,18 @@ Examples:
 * `crchk test_[00000000].txt` - check file named "test\_[00000000].txt"
 * `crchk *.mkv` - check all '.mkv' files in current directory
 
+
+### Output:
+
+The output contains 4 columns:
+
+```file_name    detected_crc    calculated_crc    status```
+
+* **file\_name**: obviously, the file name
+* **detected\_crc**: the CRC detected from file name; if it is not possible to detect the CRC in file name, `NA` is printed
+* **calculated\_crc**: the CRC-32 calculated from file
+* **status**: `ok` if detected CRC is equal to calculated CRC; `corrupted` if they are different; or `NA` if detected CRC is `NA`
+
 ## ToDo
 
 Features to be included:
