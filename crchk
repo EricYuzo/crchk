@@ -22,10 +22,12 @@ showhelp() {
     echo "Usage: $PROGRAM [OPTION]... FILE..."
     echo
     echo "Check FILE integrity based on CRC-32."
+    echo "Directories are skipped, by default. You can use -r option to handle directories recursively."
     echo
     echo "Available options:"
-    echo "  -h, --help       display this help and exit"
-    echo "  -v, --version    display version information and exit"
+    echo "  -h, --help         display this help and exit"
+    echo "  -r, --recursive    recursively look for files inside directories"
+    echo "  -v, --version      display version information and exit"
 }
 
 showversion() {
