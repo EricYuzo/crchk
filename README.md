@@ -15,7 +15,6 @@ Examples:
 
 Features to be included:
 
-* recursively look for files in directories
 * append CRC-32 check in file name
 * check files listed in a SFV file
 * generate SFV file
