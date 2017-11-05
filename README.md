@@ -5,6 +5,7 @@ Simple tool for checking the integrity of files using CRC-32.
 ## Features
 
 * Check files using CRC in the filename. The CRC-32 code must be enclosed by brackets (it may be round, square, or curly brackets). Example: "*nice\_video\_[053A143E].mkv*" or "*manual(02468ace).pdf*".
+* Directories are skipped, by default. But you can use `-r` or `--recursive` option to recursively look for files to check inside directories and subdirectories.
 
 ## Usage
 
