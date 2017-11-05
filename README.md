@@ -27,6 +27,23 @@ The output contains 4 columns:
 * **calculated\_crc**: the CRC-32 calculated from file
 * **status**: `ok` if detected CRC is equal to calculated CRC; `corrupted` if they are different; or `NA` if detected CRC is `NA`
 
+Examples:
+
+```
+$ crchk nice_video_[053A143E].mkv
+nice_video_[053A143E].mkv    053a143e    053a143e    ok
+```
+
+```
+$ crchk nice_video_[053A143F].mkv
+nice_video_[053A143F].mkv    053a143f    053a143e    corrupted
+```
+
+```
+$ crchk nice_video.mkv
+nice_video.mkv    NA    053a143e    NA
+```
+
 ## ToDo
 
 Features to be included:
