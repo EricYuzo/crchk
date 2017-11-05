@@ -22,10 +22,12 @@ showhelp() {
     echo "Usage: $PROGRAM [OPTION]... FILE..."
     echo
     echo "Check FILE integrity based on CRC-32."
+    echo "Directories are skipped, by default. You can use -r option to handle directories recursively."
     echo
     echo "Available options:"
-    echo "  -h, --help       display this help and exit"
-    echo "  -v, --version    display version information and exit"
+    echo "  -h, --help         display this help and exit"
+    echo "  -r, --recursive    recursively look for files inside directories"
+    echo "  -v, --version      display version information and exit"
 }
 
 showversion() {
@@ -61,6 +63,20 @@ verify() {
     echo "$name    $crc_name    $crc_calc    $status"
 }
 
+process() {
+    for f in "$@"
+    do
+        if [ -d "$f" ] && [ "$recursive" = "yes" ] ; then
+            if [[ "$f" == */ ]] ; then
+                f=${f%/*}
+            fi
+            process "$f"/*
+        elif [ -f "$f" ] ; then
+            verify $f
+        fi
+    done
+}
+
 main() {
     check_dependencies
 
@@ -72,6 +88,9 @@ main() {
             -h | --help )
                 showhelp
                 exit 0
+                ;;
+            -r | --recursive )
+                recursive="yes"
                 ;;
             -v | --version )
                 showversion
@@ -86,14 +105,10 @@ main() {
     set -- "${positional[@]}"
     # }
 
-
-    for f in "$@"
-    do
-        if [ -f "$f" ] ; then
-            verify $f
-        fi
-    done
+    process "$@"
 }
+
+recursive="no"
 
 not_found='NA'
 PROGRAM=$(basename $0)
