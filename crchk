@@ -35,9 +35,10 @@ showversion() {
 }
 
 extract_crc() {
-    echo "$1" | grep -q '^.*[[({][0-9A-Fa-f]\{8\}[])}]\(\.[^.]\+\)\?$'
+    regex='^.*[[({]\([0-9A-Fa-f]\{8\}\)[])}]\(\.[^.]\+\)\?$'
+    echo "$1" | grep -q "$regex"
     if [ $? -eq 0 ] ; then
-        echo "$1" | tr '[A-F]' '[a-f]' | sed 's/.*[[({]\([0-9a-f]\{8\}\)[])}]\(\.[^.]\+\)\?/\1/'
+        echo "$1" | tr '[A-F]' '[a-f]' | sed "s/${regex}/\1/"
     else
         echo "$not_found"
     fi
