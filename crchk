@@ -45,11 +45,11 @@ extract_crc() {
 }
 
 compare() {
-    crc_name=$1
-    crc_calc=$2
-    if [ "$crc_name" = "$crc_calc" ] ; then
+    detected_crc=$1
+    calculated_crc=$2
+    if [ "$detected_crc" = "$calculated_crc" ] ; then
         echo "ok"
-    elif [ "$crc_name" = "$not_found" ] ; then
+    elif [ "$detected_crc" = "$not_found" ] ; then
         echo "$not_found"
     else
         echo "corrupted"
@@ -57,11 +57,11 @@ compare() {
 }
 
 verify() {
-    name="$@"
-    crc_name=`extract_crc "$name"`
-    crc_calc=`crc32 "$name"`
-    status=`compare $crc_name $crc_calc`
-    echo "$name    $crc_name    $crc_calc    $status"
+    file_name="$@"
+    detected_crc=`extract_crc "$file_name"`
+    calculated_crc=`crc32 "$file_name"`
+    status=`compare $detected_crc $calculated_crc`
+    echo "$file_name    $detected_crc    $calculated_crc    $status"
 }
 
 process() {
