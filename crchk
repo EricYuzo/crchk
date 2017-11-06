@@ -38,7 +38,7 @@ extract_crc() {
     regex='^.*[[({]\([0-9A-Fa-f]\{8\}\)[])}]\(\.[^.]\+\)\?$'
     echo "$1" | grep -q "$regex"
     if [ $? -eq 0 ] ; then
-        echo "$1" | tr '[A-F]' '[a-f]' | sed "s/${regex}/\1/"
+        echo "$1" | tr "$tr_set1" "$tr_set2" | sed "s/${regex}/\1/"
     else
         echo "$not_found"
     fi
@@ -110,6 +110,8 @@ main() {
 }
 
 recursive="no"
+tr_set1='[A-F]'
+tr_set2='[a-f]'
 
 not_found='NA'
 PROGRAM=$(basename $0)
