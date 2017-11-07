@@ -16,6 +16,7 @@ Check the integrity of file named FILENAME. You can pass multiple file names sep
 ### Available options
 
 * `-r` or `--recursive`: recursively look for files to check in directories and subdirectories.
+* `-u` or `--uppercase`: display uppercase CRC code on output.
 * `-h` or `--help`: display a help message.
 * `-v` or `--version`: display version information.
 
