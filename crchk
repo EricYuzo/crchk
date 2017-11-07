@@ -27,6 +27,7 @@ showhelp() {
     echo "Available options:"
     echo "  -h, --help         display this help and exit"
     echo "  -r, --recursive    recursively look for files inside directories"
+    echo "  -u, --uppercase    display uppercase CRC code"
     echo "  -v, --version      display version information and exit"
 }
 
