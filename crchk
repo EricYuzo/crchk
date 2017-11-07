@@ -59,7 +59,7 @@ compare() {
 verify() {
     file_name="$@"
     detected_crc=`extract_crc "$file_name"`
-    calculated_crc=`crc32 "$file_name"`
+    calculated_crc=`crc32 "$file_name" | tr "$tr_set1" "$tr_set2"`
     status=`compare $detected_crc $calculated_crc`
     echo "$file_name    $detected_crc    $calculated_crc    $status"
 }
@@ -92,6 +92,10 @@ main() {
                 ;;
             -r | --recursive )
                 recursive="yes"
+                ;;
+            -u | --uppercase )
+                tr_set1='[a-f]'
+                tr_set2='[A-F]'
                 ;;
             -v | --version )
                 showversion
