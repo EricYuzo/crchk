@@ -65,7 +65,7 @@ verify() {
     echo "$file_name    $detected_crc    $calculated_crc    $status"
 }
 
-verify2() {
+verify_sfv() {
     re='^\(.\+\) \([0-9A-Fa-f]\{8\}\)\s*$'
     echo "$@" | grep -q "$re"
     if [ $? -eq 0 ] ; then # ignore invalid SFV lines
@@ -102,7 +102,7 @@ read_sfv() {
     base=`dirname "$1"`
     for l in `cat "$1" | grep -v '^\s*;'`
     do
-        verify2 "$base/$l"
+        verify_sfv "$base/$l"
     done
     IFS=$OLDIFS
 }
