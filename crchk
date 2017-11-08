@@ -84,14 +84,16 @@ process() {
             if [[ "$f" == */ ]] ; then
                 f=${f%/*}
             fi
-            if [ -f "$f"/*.sfv ] ; then
+            if [ "$ignoresfv" = "no" ] && [ -f "$f"/*.sfv ] ; then
                 process "$f"/*.sfv
             else
                 process "$f"/*
             fi
         elif [ -f "$f" ] ; then
             if [[ "$f" == *.sfv ]] ; then
-                read_sfv "$f"
+                if [ "$ignoresfv" = "no" ] ; then
+                    read_sfv "$f"
+                fi
             else
                 verify $f
             fi
@@ -123,6 +125,9 @@ main() {
                 showhelp
                 exit 0
                 ;;
+            -i | --ignore-sfv )
+                ignoresfv="yes"
+                ;;
             -r | --recursive )
                 recursive="yes"
                 ;;
@@ -146,6 +151,7 @@ main() {
     process "$@"
 }
 
+ignoresfv="no"
 recursive="no"
 tr_set1='[A-F]'
 tr_set2='[a-f]'
