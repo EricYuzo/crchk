@@ -4,8 +4,9 @@ Simple tool for checking the integrity of files using CRC-32.
 
 ## Features
 
-* Check files using CRC in the filename. The CRC-32 code must be enclosed by brackets (it may be round, square, or curly brackets). Example: "*nice\_video\_[053A143E].mkv*" or "*manual(02468ace).pdf*".
-* Check files inside directories and subdirectories recursively.
+* Verify files using CRC in the filename. The CRC-32 code must be enclosed by brackets (it may be round, square, or curly brackets). Example: "*nice\_video\_[053A143E].mkv*" or "*manual(02468ace).pdf*".
+* Support for SFV files.
+* Verify files inside directories and subdirectories recursively.
 
 ## Usage
 
@@ -15,6 +16,7 @@ Check the integrity of file named FILENAME. You can pass multiple file names sep
 
 ### Available options
 
+* `-i` or `--ignore-sfv`: ignore SFV files and only look for CRC code in the file name.
 * `-r` or `--recursive`: recursively look for files to check in directories and subdirectories.
 * `-u` or `--uppercase`: display uppercase CRC code on output.
 * `-h` or `--help`: display a help message.
@@ -60,5 +62,4 @@ nice_video.mkv    NA    053a143e    NA
 Features to be included:
 
 * append CRC-32 check in file name
-* check files listed in a SFV file
 * generate SFV file
