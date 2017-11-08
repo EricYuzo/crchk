@@ -84,7 +84,11 @@ process() {
             if [[ "$f" == */ ]] ; then
                 f=${f%/*}
             fi
-            process "$f"/*
+            if [ -f "$f"/*.sfv ] ; then
+                process "$f"/*.sfv
+            else
+                process "$f"/*
+            fi
         elif [ -f "$f" ] ; then
             if [[ "$f" == *.sfv ]] ; then
                 read_sfv "$f"
