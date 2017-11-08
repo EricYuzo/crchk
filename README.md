@@ -10,7 +10,7 @@ Simple tool for checking the integrity of files using CRC-32.
 
 ## Usage
 
-`crchk [OPTION] FILENAME...`
+`crchk [OPTION]... FILENAME...`
 
 Check the integrity of file named FILENAME. You can pass multiple file names separated by white spaces.
 
