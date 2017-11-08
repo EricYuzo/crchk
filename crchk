@@ -65,6 +65,15 @@ verify() {
     echo "$file_name    $detected_crc    $calculated_crc    $status"
 }
 
+verify2() {
+    re='^\(.\+\) \([0-9A-Fa-f]\{8\}\)\s*$'
+    file_name=`echo "$@" | sed "s/${re}/\1/"`
+    detected_crc=`echo "$@" | sed "s/${re}/\2/" | tr "$tr_set1" "$tr_set2"`
+    calculated_crc=`crc32 "$file_name" | tr "$tr_set1" "$tr_set2"`
+    status=`compare $detected_crc $calculated_crc`
+    echo "$file_name    $detected_crc    $calculated_crc    $status"
+}
+
 process() {
     for f in "$@"
     do
@@ -74,9 +83,25 @@ process() {
             fi
             process "$f"/*
         elif [ -f "$f" ] ; then
-            verify $f
+            if [[ "$f" == *.sfv ]] ; then
+                read_sfv "$f"
+            else
+                verify $f
+            fi
         fi
     done
+}
+
+read_sfv() {
+    OLDIFS=$IFS
+    IFS='
+'
+    base=`dirname "$1"`
+    for l in `cat "$1" | grep -v '^ *;'`
+    do
+        verify2 "$base/$l"
+    done
+    IFS=$OLDIFS
 }
 
 main() {
