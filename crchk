@@ -65,6 +65,11 @@ verify() {
     calculated_crc=`crc32 "$file_name" | tr "$tr_set1" "$tr_set2"`
     status=`compare $detected_crc $calculated_crc`
     echo "$file_name    $detected_crc    $calculated_crc    $status"
+    if [ "$generatesfv" = "yes" ] ; then
+        sfvdir=`dirname "$file_name"`
+        fname=`basename "$file_name"`
+        echo "$fname $calculated_crc" >> "$sfvdir/$sfvname"
+    fi
 }
 
 verify_sfv() {
@@ -159,6 +164,7 @@ main() {
 generatesfv="no"
 ignoresfv="no"
 recursive="no"
+sfvname='temp.sfv'
 tr_set1='[A-F]'
 tr_set2='[a-f]'
 
