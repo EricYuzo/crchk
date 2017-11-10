@@ -4,17 +4,20 @@ Simple tool for checking the integrity of files using CRC-32.
 
 ## Features
 
-* Check files using CRC in the filename. The CRC-32 code must be enclosed by brackets (it may be round, square, or curly brackets). Example: "*nice\_video\_[053A143E].mkv*" or "*manual(02468ace).pdf*".
-* Check files inside directories and subdirectories recursively.
+* Verify files using CRC in the filename. The CRC-32 code must be enclosed by brackets (it may be round, square, or curly brackets). Example: "*nice\_video\_[053A143E].mkv*" or "*manual(02468ace).pdf*".
+* Support for SFV files.
+* Verify files inside directories and subdirectories recursively.
 
 ## Usage
 
-`crchk [OPTION] FILENAME...`
+`crchk [OPTION]... FILENAME...`
 
 Check the integrity of file named FILENAME. You can pass multiple file names separated by white spaces.
 
 ### Available options
 
+* `-g` or `--generate-sfv`: generate SFV file. The SFV file has the same name of the parent directory and extension ".sfv". If a file with the same name already exists, then the SFV file is not created or modified. There is no option for overwriting existing SFV files, if you want to, you have to delete the files manually.
+* `-i` or `--ignore-sfv`: ignore SFV files and only look for CRC code in the file name.
 * `-r` or `--recursive`: recursively look for files to check in directories and subdirectories.
 * `-u` or `--uppercase`: display uppercase CRC code on output.
 * `-h` or `--help`: display a help message.
@@ -25,6 +28,7 @@ Check the integrity of file named FILENAME. You can pass multiple file names sep
 * `crchk test_[00000000].txt` - check file named "test\_[00000000].txt"
 * `crchk *.mkv` - check all '.mkv' files in current directory
 * `crchk -r ~/videos` - check all files inside "~/videos" or any one of its subdirectories
+* `crchk -g ~/videos/*` - check all files inside "~/videos" and create a SFV file named "videos.sfv"
 
 
 ### Output:
@@ -60,5 +64,3 @@ nice_video.mkv    NA    053a143e    NA
 Features to be included:
 
 * append CRC-32 check in file name
-* check files listed in a SFV file
-* generate SFV file
