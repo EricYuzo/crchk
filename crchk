@@ -67,9 +67,11 @@ verify() {
     echo "$file_name    $detected_crc    $calculated_crc    $status"
     if [ "$generatesfv" = "yes" ] ; then
         sfvdir=$(dirname "$file_name")
-        fname=$(basename "$file_name")
         sfvname=$(basename "$sfvdir").sfv
-        echo "$fname $calculated_crc" >> "$sfvdir/$sfvname"
+        if [ ! -f  "$sfvdir/$sfvname" ] || [ $(date +%s -r "$sfvdir/$sfvname") -gt $exectime  ] ; then
+            fname=$(basename "$file_name")
+            echo "$fname $calculated_crc" >> "$sfvdir/$sfvname"
+        fi
     fi
 }
 
@@ -162,6 +164,7 @@ main() {
     process "$@"
 }
 
+exectime=$(date +%s)
 generatesfv="no"
 ignoresfv="no"
 recursive="no"
