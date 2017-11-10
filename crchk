@@ -76,7 +76,7 @@ verify() {
     elif [ "$appendcrc" = "yes" ] && [ "$detected_crc" = "$not_found" ] ; then
         fname="${file_name%.*}"
         fext="${file_name##*.}"
-        mv "$file_name" "${fname}_[${calculated_crc}].${fext}"
+        mv "$file_name" "${fname}_${delim1}${calculated_crc}${delim2}.${fext}"
     fi
 }
 
@@ -139,6 +139,26 @@ main() {
             -a | --append-crc )
                 appendcrc="yes"
                 ;;
+            -b )
+                case $2 in
+                    square )
+                        delim1='['
+                        delim2=']'
+                        ;;
+                    round | parentheses )
+                        delim1='('
+                        delim2=')'
+                        ;;
+                    curly | braces )
+                        delim1='{'
+                        delim2='}'
+                        ;;
+                    * )
+                        error "Invalid enclosing brackets: $2"
+                        ;;
+                esac
+                shift
+                ;;
             -g | --generate-sfv )
                 generatesfv="yes"
                 ;;
@@ -160,7 +180,7 @@ main() {
                 showversion
                 exit 0
                 ;;
-            *)
+            * )
                 positional+=("$1")
                 ;;
         esac
@@ -177,6 +197,8 @@ appendcrc="no"
 generatesfv="no"
 ignoresfv="no"
 recursive="no"
+delim1='['
+delim2=']'
 tr_set1='[A-F]'
 tr_set2='[a-f]'
 
