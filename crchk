@@ -25,6 +25,7 @@ showhelp() {
     echo "Directories are skipped, by default. You can use -r option to handle directories recursively."
     echo
     echo "Available options:"
+    echo "  -a, --append-crc      append calculated CRC-32 to file name"
     echo "  -g, --generate-sfv    generate SFV file"
     echo "  -h, --help            display this help and exit"
     echo "  -i, --ignore-sfv      ignore SFV files"
