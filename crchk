@@ -73,6 +73,10 @@ verify() {
             fname=$(basename "$file_name")
             echo "$fname $calculated_crc" >> "$sfvdir/$sfvname"
         fi
+    elif [ "$appendcrc" = "yes" ] && [ "$detected_crc" = "$not_found" ] ; then
+        fname="${file_name%.*}"
+        fext="${file_name##*.}"
+        mv "$file_name" "${fname}_[${calculated_crc}].${fext}"
     fi
 }
 
