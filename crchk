@@ -68,6 +68,7 @@ verify() {
     if [ "$generatesfv" = "yes" ] ; then
         sfvdir=`dirname "$file_name"`
         fname=`basename "$file_name"`
+        sfvname=`basename "$sfvdir"`.sfv
         echo "$fname $calculated_crc" >> "$sfvdir/$sfvname"
     fi
 }
@@ -164,7 +165,6 @@ main() {
 generatesfv="no"
 ignoresfv="no"
 recursive="no"
-sfvname='temp.sfv'
 tr_set1='[A-F]'
 tr_set2='[a-f]'
 
