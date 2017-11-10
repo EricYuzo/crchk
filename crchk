@@ -159,6 +159,25 @@ main() {
                 esac
                 shift
                 ;;
+            --brackets=* )
+                case ${1#*=} in
+                    square )
+                        delim1='['
+                        delim2=']'
+                        ;;
+                    round | parentheses )
+                        delim1='('
+                        delim2=')'
+                        ;;
+                    curly | braces )
+                        delim1='{'
+                        delim2='}'
+                        ;;
+                    * )
+                        error "Invalid enclosing brackets: ${1#*=}"
+                        ;;
+                esac
+                ;;
             -g | --generate-sfv )
                 generatesfv="yes"
                 ;;
