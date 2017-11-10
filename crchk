@@ -61,14 +61,14 @@ compare() {
 
 verify() {
     file_name="$@"
-    detected_crc=`extract_crc "$file_name"`
-    calculated_crc=`crc32 "$file_name" | tr "$tr_set1" "$tr_set2"`
-    status=`compare $detected_crc $calculated_crc`
+    detected_crc=$(extract_crc "$file_name")
+    calculated_crc=$(crc32 "$file_name" | tr "$tr_set1" "$tr_set2")
+    status=$(compare $detected_crc $calculated_crc)
     echo "$file_name    $detected_crc    $calculated_crc    $status"
     if [ "$generatesfv" = "yes" ] ; then
-        sfvdir=`dirname "$file_name"`
-        fname=`basename "$file_name"`
-        sfvname=`basename "$sfvdir"`.sfv
+        sfvdir=$(dirname "$file_name")
+        fname=$(basename "$file_name")
+        sfvname=$(basename "$sfvdir").sfv
         echo "$fname $calculated_crc" >> "$sfvdir/$sfvname"
     fi
 }
@@ -77,10 +77,10 @@ verify_sfv() {
     re='^\(.\+\) \([0-9A-Fa-f]\{8\}\)\s*$'
     echo "$@" | grep -q "$re"
     if [ $? -eq 0 ] ; then # ignore invalid SFV lines
-        file_name=`echo "$@" | sed "s/${re}/\1/"`
-        detected_crc=`echo "$@" | sed "s/${re}/\2/" | tr "$tr_set1" "$tr_set2"`
-        calculated_crc=`crc32 "$file_name" | tr "$tr_set1" "$tr_set2"`
-        status=`compare $detected_crc $calculated_crc`
+        file_name=$(echo "$@" | sed "s/${re}/\1/")
+        detected_crc=$(echo "$@" | sed "s/${re}/\2/" | tr "$tr_set1" "$tr_set2")
+        calculated_crc=$(crc32 "$file_name" | tr "$tr_set1" "$tr_set2")
+        status=$(compare $detected_crc $calculated_crc)
         echo "$file_name    $detected_crc    $calculated_crc    $status"
     fi
 }
@@ -113,8 +113,8 @@ read_sfv() {
     OLDIFS=$IFS
     IFS='
 '
-    base=`dirname "$1"`
-    for l in `cat "$1" | grep -v '^\s*;'`
+    base=$(dirname "$1")
+    for l in $(cat "$1" | grep -v '^\s*;')
     do
         verify_sfv "$base/$l"
     done
