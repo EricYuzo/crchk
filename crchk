@@ -131,6 +131,9 @@ main() {
     while [ $# -gt 0 ]
     do
         case $1 in
+            -a | --append-crc )
+                appendcrc="yes"
+                ;;
             -g | --generate-sfv )
                 generatesfv="yes"
                 ;;
@@ -165,6 +168,7 @@ main() {
 }
 
 exectime=$(date +%s)
+appendcrc="no"
 generatesfv="no"
 ignoresfv="no"
 recursive="no"
