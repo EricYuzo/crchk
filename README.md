@@ -16,6 +16,7 @@ Check the integrity of file named FILENAME. You can pass multiple file names sep
 
 ### Available options
 
+* `-g` or `--generate-sfv`: generate SFV file. The SFV file has the same name of the parent directory and extension ".sfv". If a file with the same name already exists, then the SFV file is not created or modified. There is no option for overwriting existing SFV files, if you want to, you have to delete the files manually.
 * `-i` or `--ignore-sfv`: ignore SFV files and only look for CRC code in the file name.
 * `-r` or `--recursive`: recursively look for files to check in directories and subdirectories.
 * `-u` or `--uppercase`: display uppercase CRC code on output.
@@ -27,6 +28,7 @@ Check the integrity of file named FILENAME. You can pass multiple file names sep
 * `crchk test_[00000000].txt` - check file named "test\_[00000000].txt"
 * `crchk *.mkv` - check all '.mkv' files in current directory
 * `crchk -r ~/videos` - check all files inside "~/videos" or any one of its subdirectories
+* `crchk -g ~/videos/*` - check all files inside "~/videos" and create a SFV file named "videos.sfv"
 
 
 ### Output:
@@ -62,4 +64,3 @@ nice_video.mkv    NA    053a143e    NA
 Features to be included:
 
 * append CRC-32 check in file name
-* generate SFV file
