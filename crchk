@@ -32,6 +32,8 @@ showhelp() {
     echo "  -h, --help             display this help and exit"
     echo "  -i, --ignore-sfv       ignore SFV files"
     echo "  -r, --recursive        recursively look for files inside directories"
+    echo "  -s, --sep=TEXT         TEXT added between file name and appended CRC"
+    echo "      --separator=TEXT"
     echo "  -u, --uppercase        display uppercase CRC code"
     echo "  -v, --version          display version information and exit"
 }
@@ -78,7 +80,7 @@ verify() {
     elif [ "$appendcrc" = "yes" ] && [ "$detected_crc" = "$not_found" ] ; then
         fname="${file_name%.*}"
         fext="${file_name##*.}"
-        mv "$file_name" "${fname}_${delim1}${calculated_crc}${delim2}.${fext}"
+        mv "$file_name" "${fname}${sep}${delim1}${calculated_crc}${delim2}.${fext}"
     fi
 }
 
@@ -193,6 +195,13 @@ main() {
             -r | --recursive )
                 recursive="yes"
                 ;;
+            -s )
+                sep=$2
+                shift
+                ;;
+            --sep=* | --separator=* )
+                sep="${1#*=}"
+                ;;
             -u | --uppercase )
                 tr_set1='[a-f]'
                 tr_set2='[A-F]'
@@ -220,6 +229,7 @@ ignoresfv="no"
 recursive="no"
 delim1='['
 delim2=']'
+sep='_'
 tr_set1='[A-F]'
 tr_set2='[a-f]'
 
