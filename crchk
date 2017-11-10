@@ -25,13 +25,15 @@ showhelp() {
     echo "Directories are skipped, by default. You can use -r option to handle directories recursively."
     echo
     echo "Available options:"
-    echo "  -a, --append-crc      append calculated CRC-32 to file name"
-    echo "  -g, --generate-sfv    generate SFV file"
-    echo "  -h, --help            display this help and exit"
-    echo "  -i, --ignore-sfv      ignore SFV files"
-    echo "  -r, --recursive       recursively look for files inside directories"
-    echo "  -u, --uppercase       display uppercase CRC code"
-    echo "  -v, --version         display version information and exit"
+    echo "  -a, --append-crc       append calculated CRC-32 to file name"
+    echo "  -b, --brackets=TYPE    TYPE of brackets used to enclose CRC appended to file name;"
+    echo "                         TYPE is 'square', 'round', or 'curly'"
+    echo "  -g, --generate-sfv     generate SFV file"
+    echo "  -h, --help             display this help and exit"
+    echo "  -i, --ignore-sfv       ignore SFV files"
+    echo "  -r, --recursive        recursively look for files inside directories"
+    echo "  -u, --uppercase        display uppercase CRC code"
+    echo "  -v, --version          display version information and exit"
 }
 
 showversion() {
