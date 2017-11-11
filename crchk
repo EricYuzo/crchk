@@ -41,7 +41,7 @@ showhelp() {
 }
 
 showversion() {
-    echo "$PROGRAM $version"
+    echo "$PROGRAM version $VERSION"
 }
 
 extract_crc() {
@@ -215,7 +215,7 @@ main() {
                 tr_set1='[a-f]'
                 tr_set2='[A-F]'
                 ;;
-            -v | --version )
+            -v | --ver | --version )
                 showversion
                 exit 0
                 ;;
@@ -234,19 +234,22 @@ main() {
     process "$@"
 }
 
+
 exectime=$(date +%s)
+
 appendcrc="no"
 generatesfv="no"
 ignoresfv="no"
 recursive="no"
+
 delim1='['
 delim2=']'
+not_found='NA'
 sep='_'
 tr_set1='[A-F]'
 tr_set2='[a-f]'
 
-not_found='NA'
 PROGRAM=$(basename $0)
-version="0.1.0"
+VERSION="0.1.0"
 
 main "$@"
