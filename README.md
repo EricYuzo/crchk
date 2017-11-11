@@ -105,3 +105,19 @@ docs/report2_[7d5e06c3].txt    7d5e06c3    7d5e06c3    ok
 docs/subdir/report3_[d1f4ad85].txt    d1f4ad85    d1f4ad85    ok
 docs/subdir/report4_[b9b1db50].txt    b9b1db50    84462499    corrupted
 ```
+
+### Display uppercase CRC code
+
+Specify option `-u`, or `--uppercase`:
+
+```
+$ crchk -u docs/*.txt
+docs/report1_[bd3f9af6].txt    BD3F9AF6    BD3F9AF6    ok
+docs/report2_[7d5e06c3].txt    7D5E06C3    7D5E06C3    ok
+```
+
+```
+$ crchk --uppercase docs/*.txt
+docs/report1_[bd3f9af6].txt    BD3F9AF6    BD3F9AF6    ok
+docs/report2_[7d5e06c3].txt    7D5E06C3    7D5E06C3    ok
+```
