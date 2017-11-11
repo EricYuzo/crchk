@@ -142,9 +142,6 @@ main() {
     while [ $# -gt 0 ]
     do
         case $1 in
-            -a | --append-crc )
-                appendcrc="yes"
-                ;;
             -b )
                 case $2 in
                     square )
@@ -191,18 +188,9 @@ main() {
             --file=* )
                 positional+=("${1#*=}")
                 ;;
-            -g | --generate-sfv )
-                generatesfv="yes"
-                ;;
             -h | --help | '-?' | '--?' )
                 showhelp
                 exit 0
-                ;;
-            -i | --ignore-sfv )
-                ignoresfv="yes"
-                ;;
-            -r | --recursive )
-                recursive="yes"
                 ;;
             -s )
                 sep=$2
@@ -211,16 +199,36 @@ main() {
             --sep=* | --separator=* )
                 sep="${1#*=}"
                 ;;
-            -u | --uppercase )
-                tr_set1='[a-f]'
-                tr_set2='[A-F]'
-                ;;
             -v | --ver | --version )
                 showversion
                 exit 0
                 ;;
             -* )
-                error "Unrecognized option: $1"
+                optfound="no"
+                if [[ $1 =~ ^(-[giru]*a[giru]*|--append-crc)$ ]] ; then
+                    appendcrc="yes"
+                    optfound="yes"
+                fi
+                if [[ $1 =~ ^(-[airu]*g[airu]*|--generate-sfv)$ ]] ; then
+                    generatesfv="yes"
+                    optfound="yes"
+                fi
+                if [[ $1 =~ ^(-[agru]*i[agru]*|--ignore-sfv)$ ]] ; then
+                    ignoresfv="yes"
+                    optfound="yes"
+                fi
+                if [[ $1 =~ ^(-[agiu]*r[agiu]*|--recursive)$ ]] ; then
+                    recursive="yes"
+                    optfound="yes"
+                fi
+                if [[ $1 =~ ^(-[agir]*u[agir]*|--uppercase)$ ]] ; then
+                    tr_set1='[a-f]'
+                    tr_set2='[A-F]'
+                    optfound="yes"
+                fi
+                if [ "$optfound" = "no" ] ; then
+                    error "Unrecognized option: $1"
+                fi
                 ;;
             * )
                 positional+=("$1")
