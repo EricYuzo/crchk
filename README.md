@@ -4,9 +4,10 @@ Simple tool for checking the integrity of files using CRC-32.
 
 ## Features
 
-* Verify files using CRC in the filename. The CRC-32 code must be enclosed by brackets (it may be round, square, or curly brackets). Example: "*nice\_video\_[053A143E].mkv*" or "*manual(02468ace).pdf*".
-* Support for SFV files.
+* Verify files using CRC in the filename. The CRC-32 code must be enclosed by brackets (it may be _round_, _square_, or _curly_ brackets). Example: "*nice\_video\_[053A143E].mkv*" or "*manual(02468ace).pdf*".
 * Verify files inside directories and subdirectories recursively.
+* Support for SFV files.
+* Append CRC-32 code to file name.
 
 ## Usage
 
@@ -59,8 +60,3 @@ $ crchk nice_video.mkv
 nice_video.mkv    NA    053a143e    NA
 ```
 
-## ToDo
-
-Features to be included:
-
-* append CRC-32 check in file name
