@@ -58,3 +58,29 @@ Here you have some examples of accepted CRC specification:
 
 The CRC code will only be detected in the file name, if it follows this naming convention.
 
+
+## Tutorial
+
+### Verify files with CRC code in the file name
+
+Just call crchk passing the file you want to verify:
+
+```
+$ crchk 'docs/report1_[bd3f9af6].txt'
+docs/report1_[bd3f9af6].txt    bd3f9af6    bd3f9af6    ok
+```
+
+You can also pass multiple files:
+
+```
+crchk 'docs/report1_[bd3f9af6].txt' 'docs/report2_[7d5e06c3].txt'
+docs/report1_[bd3f9af6].txt    bd3f9af6    bd3f9af6    ok
+docs/report2_[7d5e06c3].txt    7d5e06c3    7d5e06c3    ok
+```
+
+```
+crchk docs/*.txt
+docs/report1_[bd3f9af6].txt    bd3f9af6    bd3f9af6    ok
+docs/report2_[7d5e06c3].txt    7d5e06c3    7d5e06c3    ok
+```
+
