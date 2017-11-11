@@ -9,11 +9,11 @@ Simple tool for checking the integrity of files using CRC-32.
 * Support for SFV files.
 * Append calculated CRC-32 code to file name.
 
-## Dependency
+## Dependencies
 
-This tool requires the program `crc32`.
+This tool requires `bash` shell and the program `crc32`.
 
-On Debian-like systems, install the package `libarchive-zip-perl`.
+On Debian-like systems, to obtain `crc32`, install the package `libarchive-zip-perl`.
 
 ## General information
 
