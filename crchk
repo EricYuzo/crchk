@@ -106,7 +106,7 @@ process() {
                 f=${f%/*}
             fi
             if [ "$ignoresfv" = "no" ] && [ -f "$f"/*.sfv ] ; then
-                process "$f"/*.sfv
+                process "$f"/*.sfv "$f"/*/
             else
                 process "$f"/*
             fi
