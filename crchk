@@ -194,7 +194,7 @@ main() {
             -g | --generate-sfv )
                 generatesfv="yes"
                 ;;
-            -h | --help )
+            -h | --help | '-?' | '--?' )
                 showhelp
                 exit 0
                 ;;
