@@ -121,3 +121,30 @@ $ crchk --uppercase docs/*.txt
 docs/report1_[bd3f9af6].txt    BD3F9AF6    BD3F9AF6    ok
 docs/report2_[7d5e06c3].txt    7D5E06C3    7D5E06C3    ok
 ```
+
+### Reading CRC from SFV files
+
+Any file with extension ".sfv" is handled as a SFV file.
+
+As an example, consider a file named docs.sfv with the following content:
+
+```
+report1.txt bd3f9af6
+report2.txt 7d5e06c3
+```
+
+Notice that the file name does not contain the CRC. If you pass those files to `crchk`, it will return `NA`:
+
+```
+$ crchk docs/*.txt
+docs/report1.txt    NA    bd3f9af6    NA
+docs/report2.txt    NA    7d5e06c3    NA
+```
+
+However, if you pass the file `docs.sfv`, it will succeed in verifying the 2 files:
+
+```
+$ crchk docs/docs.sfv
+docs/report1.txt    bd3f9af6    bd3f9af6    ok
+docs/report2.txt    7d5e06c3    7d5e06c3    ok
+```
