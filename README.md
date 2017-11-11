@@ -84,3 +84,24 @@ docs/report1_[bd3f9af6].txt    bd3f9af6    bd3f9af6    ok
 docs/report2_[7d5e06c3].txt    7d5e06c3    7d5e06c3    ok
 ```
 
+### Handle directories recursively
+
+Directories are skipped, by default. You can use `-r` option to handle directories recursively:
+
+```
+$ crchk -r docs/
+docs/report1_[bd3f9af6].txt    bd3f9af6    bd3f9af6    ok
+docs/report2_[7d5e06c3].txt    7d5e06c3    7d5e06c3    ok
+docs/subdir/report3_[d1f4ad85].txt    d1f4ad85    d1f4ad85    ok
+docs/subdir/report4_[b9b1db50].txt    b9b1db50    84462499    corrupted
+```
+
+Option `--recursive` has the same effect:
+
+```
+$ crchk --recursive docs/
+docs/report1_[bd3f9af6].txt    bd3f9af6    bd3f9af6    ok
+docs/report2_[7d5e06c3].txt    7d5e06c3    7d5e06c3    ok
+docs/subdir/report3_[d1f4ad85].txt    d1f4ad85    d1f4ad85    ok
+docs/subdir/report4_[b9b1db50].txt    b9b1db50    84462499    corrupted
+```
