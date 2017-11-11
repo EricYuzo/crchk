@@ -219,6 +219,9 @@ main() {
                 showversion
                 exit 0
                 ;;
+            -* )
+                error "Unrecognized option: $1"
+                ;;
             * )
                 positional+=("$1")
                 ;;
