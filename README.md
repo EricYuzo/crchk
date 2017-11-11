@@ -4,10 +4,16 @@ Simple tool for checking the integrity of files using CRC-32.
 
 ## Features
 
-* Verify files using CRC in the filename. The CRC-32 code must be enclosed by brackets (it may be _round_, _square_, or _curly_ brackets). Example: "*nice\_video\_[053A143E].mkv*" or "*manual(02468ace).pdf*".
+* Verify files using CRC in the file name. The CRC-32 code must be enclosed by brackets (it may be _round_, _square_, or _curly_ brackets). Example: "*nice\_video\_[053A143E].mkv*" or "*manual(02468ace).pdf*".
 * Verify files inside directories and subdirectories recursively.
 * Support for SFV files.
 * Append CRC-32 code to file name.
+
+## Dependency
+
+This tool requires the program `crc32`.
+
+On Debian-like systems, install the package `libarchive-zip-perl`.
 
 ## Usage
 
