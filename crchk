@@ -75,7 +75,7 @@ verify() {
     if [ "$generatesfv" = "yes" ] ; then
         sfvdir=$(dirname "$file_name")
         sfvname=$(basename "$sfvdir").sfv
-        if [ ! -f  "$sfvdir/$sfvname" ] || [ $(date +%s -r "$sfvdir/$sfvname") -gt $exectime  ] ; then
+        if [ ! -f  "$sfvdir/$sfvname" ] || [ $(date +%s -r "$sfvdir/$sfvname") -ge $exectime  ] ; then
             fname=$(basename "$file_name")
             echo "$fname $calculated_crc" >> "$sfvdir/$sfvname"
         fi
