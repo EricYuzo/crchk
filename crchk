@@ -34,7 +34,8 @@ showhelp() {
     echo "  -r, --recursive        recursively look for files inside directories"
     echo "  -s, --sep=TEXT         TEXT added between file name and appended CRC"
     echo "      --separator=TEXT"
-    echo "  -u, --uppercase        display uppercase CRC code"
+    echo "  -u, --uppercase        display uppercase CRC code;"
+    echo "                         if -a is specified, append uppercase CRC to file name"
     echo "  -v, --version          display version information and exit"
 }
 
