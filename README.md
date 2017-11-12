@@ -188,4 +188,16 @@ docs/report2.txt    filename    NA    7d5e06c3    NA
 
 Notice that the output is the same as file verification. The SFV file has the same name of the parent directory and extension `.sfv`. In the example above, a file named `docs.sfv` will be created inside `docs` directory.
 
-It is important to know that if a file with the same name already exists, then the SFV file is not created or modified. There is no option for overwriting existing SFV files, if you want to, you have to delete the files manually. This decision was made for avoiding unintended modification of existing SFV files, especially when recursive option is enabled.
+You can use `-g` option combined with `-u` to save uppercase CRC codes. You can also combine `-g` with `-r`. In this case, a different SFV file will be created inside each directory containing the CRC codes for each regular file in the directory. Each SFV file created this way will receive the name of its parent directory.
+
+```
+$ crchk -gru docs/
+docs/report1.txt    filename    NA    BD3F9AF6    NA
+docs/report2.txt    filename    NA    7D5E06C3    NA
+docs/subdir/report3.txt    filename    NA    D1F4AD85    NA
+docs/subdir/report4.txt    filename    NA    84462499    NA
+```
+
+In the example above, two SFV will be created: `docs/docs.sfv` and `docs/subdir/subdir.sfv`.
+
+**Important Note:** It is important to know that if a file with the same name already exists, then the SFV file is not created or modified. There is no option for overwriting existing SFV files, if you want to, you have to delete the files manually. This decision was made to avoid unintended modification of existing SFV files, especially when recursive option is enabled.
