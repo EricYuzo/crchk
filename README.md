@@ -175,3 +175,17 @@ docs/report2.txt    filename    NA    7d5e06c3    NA
 docs/subdir/report3.txt    filename    NA    d1f4ad85    NA
 docs/subdir/report4.txt    filename    NA    84462499    NA
 ```
+
+#### Generating SFV
+
+You can use `-g` or `--generate-sfv` option to generate SFV files.
+
+```
+$ crchk -g docs/*.txt
+docs/report1.txt    filename    NA    bd3f9af6    NA
+docs/report2.txt    filename    NA    7d5e06c3    NA
+```
+
+Notice that the output is the same as file verification. The SFV file has the same name of the parent directory and extension `.sfv`. In the example above, a file named `docs.sfv` will be created inside `docs` directory.
+
+It is important to know that if a file with the same name already exists, then the SFV file is not created or modified. There is no option for overwriting existing SFV files, if you want to, you have to delete the files manually. This decision was made for avoiding unintended modification of existing SFV files, especially when recursive option is enabled.
