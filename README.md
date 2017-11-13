@@ -201,3 +201,57 @@ docs/subdir/report4.txt    filename    NA    84462499    NA
 In the example above, two SFV will be created: `docs/docs.sfv` and `docs/subdir/subdir.sfv`.
 
 **Important Note:** It is important to know that if a file with the same name already exists, then the SFV file is not created or modified. There is no option for overwriting existing SFV files, if you want to, you have to delete the files manually. This decision was made to avoid unintended modification of existing SFV files, especially when recursive option is enabled.
+
+### Appending CRC to the file name
+
+The option `-a` or `--append-crc` can be used to append calculated CRC-32 to the file name.
+
+```
+$ crchk -a docs/*.txt
+docs/report1.txt    filename    NA    bd3f9af6    NA
+docs/report2.txt    filename    NA    7d5e06c3    NA
+
+$ ls docs/*.txt
+docs/report1_[bd3f9af6].txt  docs/report2_[7d5e06c3].txt
+```
+
+In the example above we have 2 files, `report1.txt` and `report2.txt`. After running `crchk -a`, the files were renamed to `report1_[bd3f9af6].txt` and `report2_[7d5e06c3].txt` respectively.
+
+You can combine `-a` with `-u` and/or `-r`:
+
+```
+$ crchk -aru docs/
+docs/report1.txt    filename    NA    BD3F9AF6    NA
+docs/report2.txt    filename    NA    7D5E06C3    NA
+docs/subdir/report3.txt    filename    NA    D1F4AD85    NA
+docs/subdir/report4.txt    filename    NA    84462499    NA
+
+$ ls -R docs/
+docs/:
+report1_[BD3F9AF6].txt  report2_[7D5E06C3].txt  subdir
+
+docs/subdir:
+report3_[D1F4AD85].txt  report4_[84462499].txt
+```
+
+In this example, the files were verified recursively and uppercase CRC were appented to their names.
+
+
+**Important Note:** The CRC will only be appended to the file name when detected CRC is `NA`, otherwise nothing is done. To avoid unintended loss of original CRC information, there is no option for replacing or removing the CRC already present in the file name.
+
+```
+$ crchk -aru docs/
+docs/report1.txt    sfv    BD3F9AF6    BD3F9AF6    ok
+docs/report2.txt    sfv    7D5E06C3    7D5E06C3    ok
+docs/subdir/report3.txt    sfv    D1F4AD85    D1F4AD85    ok
+docs/subdir/report4.txt    sfv    B9B1DB50    84462499    corrupted
+
+$ ls -R docs/
+docs/:
+docs.sfv  report1.txt  report2.txt  subdir
+
+docs/subdir:
+report3.txt  report4.txt  subdir.sfv
+```
+
+In the example above, the CRC were detected from SFV file. Then the calculated CRC were not appended to the file names. As you can see, there is a corrupted file (`docs/subdir/report4.txt`). It would be a mistake to append the calculated CRC to this kind of file.
