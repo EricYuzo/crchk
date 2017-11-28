@@ -51,12 +51,12 @@ nice_video_(copy2).mkv    filename    NA    053a143e    NA
 
 ### Naming convention
 
-The CRC code must be in the end of file name (before extension), and enclosed by brackets (it may be round, square, or curly brackets).
+The CRC-32 code is an 8-digit hexadecimal number that must be present in the file name enclosed by brackets (it may be round, square, or curly brackets).
 
 Here you have some examples of accepted CRC specification:
 
 * "nice\_video\_[053A143E].mkv"
-* "manual-v1.0.0-(02468ace).pdf"
+* "manual-v1.0.0-(02468ace)-final.pdf"
 * "readme{8089e087}.txt"
 
 The CRC code will only be detected in the file name, if it follows this naming convention.
