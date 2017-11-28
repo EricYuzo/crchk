@@ -45,7 +45,7 @@ showversion() {
 }
 
 extract_crc() {
-    regex='^.*[[({]\([0-9A-Fa-f]\{8\}\)[])}]\(\.[^.]\+\)\?$'
+    regex='^.*[[({]\([0-9A-Fa-f]\{8\}\)[])}].*$'
     echo "$1" | grep -q "$regex"
     if [ $? -eq 0 ] ; then
         echo "$1" | tr "$tr_set1" "$tr_set2" | sed "s/${regex}/\1/"
