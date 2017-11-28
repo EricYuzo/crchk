@@ -157,6 +157,13 @@ main() {
                 showhelp
                 exit 0
                 ;;
+            -p )
+                append_pattern="$2"
+                shift
+                ;;
+            --pattern=* )
+                append_pattern="${1#*=}"
+                ;;
             -v | --ver | --version )
                 showversion
                 exit 0
