@@ -155,8 +155,7 @@ main() {
                 positional+=("${1#*=}")
                 ;;
             -h | --help | '-?' | '--?' )
-                showhelp
-                exit 0
+                hset="yes"
                 ;;
             -p )
                 append_pattern="$2"
@@ -166,30 +165,36 @@ main() {
                 append_pattern="${1#*=}"
                 ;;
             -v | --ver | --version )
-                showversion
-                exit 0
+                vset="yes"
                 ;;
             -* )
                 optfound="no"
-                if [[ $1 =~ ^(-[giru]*a[giru]*p?|--append-crc)$ ]] ; then
+                if [[ $1 =~ ^(-[giru]*a[giru]*[fp]?|--append-crc)$ ]] ; then
                     appendcrc="yes"
                     optfound="yes"
                 fi
-                if [[ $1 =~ ^(-[airu]*g[airu]*p?|--generate-sfv)$ ]] ; then
+                if [[ $1 =~ ^(-[airu]*g[airu]*[fp]?|--generate-sfv)$ ]] ; then
                     generatesfv="yes"
                     optfound="yes"
                 fi
-                if [[ $1 =~ ^(-[agru]*i[agru]*p?|--ignore-sfv)$ ]] ; then
+                if [[ $1 =~ ^(-[agru]*i[agru]*[fp]?|--ignore-sfv)$ ]] ; then
                     ignoresfv="yes"
                     optfound="yes"
                 fi
-                if [[ $1 =~ ^(-[agiu]*r[agiu]*p?|--recursive)$ ]] ; then
+                if [[ $1 =~ ^(-[agiu]*r[agiu]*[fp]?|--recursive)$ ]] ; then
                     recursive="yes"
                     optfound="yes"
                 fi
-                if [[ $1 =~ ^(-[agir]*u[agir]*p?|--uppercase)$ ]] ; then
+                if [[ $1 =~ ^(-[agir]*u[agir]*[fp]?|--uppercase)$ ]] ; then
                     tr_set1='[a-f]'
                     tr_set2='[A-F]'
+                    optfound="yes"
+                fi
+                if [[ $1 =~ ^(-[agiru]*f)$ ]] ; then
+                    positional+=("$2")
+                    shift
+                    hset="no"
+                    vset="no"
                     optfound="yes"
                 fi
                 if [[ $1 =~ ^(-[agiru]*p)$ ]] ; then
@@ -207,6 +212,13 @@ main() {
         esac
         shift
     done
+    if [ "$hset" = "yes" ] ; then
+        showhelp
+        exit 0
+    elif [ "$vset" = "yes" ] ; then
+        showversion
+        exit 0
+    fi
     set -- "${positional[@]}"
     # }
 
@@ -220,6 +232,8 @@ appendcrc="no"
 generatesfv="no"
 ignoresfv="no"
 recursive="no"
+hset="no"
+vset="no"
 
 append_pattern='%NAME_[%CRC].%EXT'
 not_found='NA'
