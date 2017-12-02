@@ -85,7 +85,7 @@ verify() {
     elif [ "$appendcrc" = "yes" ] && [ "$detected_crc" = "$not_found" ] ; then
         fname="${file_name%.*}"
         fext="${file_name##*.}"
-        mv "$file_name" "$(echo ${append_pattern} | sed "s/\([^%]\)\?%NAME/\1${fname}/" | sed "s/\([^%]\)\?%CRC/\1${calculated_crc}/" | sed "s/\([^%]\)\?%EXT/\1${fext}/" )"
+        mv "$file_name" "$(echo ${append_pattern} | sed "s/\(^\|[^%]\)%NAME/\1${fname}/" | sed "s/\(^\|[^%]\)%CRC/\1${calculated_crc}/" | sed "s/\(^\|[^%]\)%EXT/\1${fext}/" )"
     fi
 }
 
