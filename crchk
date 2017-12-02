@@ -35,6 +35,7 @@ showhelp() {
     echo "                             %NAME - replaced by file name (without extension)"
     echo "                             %EXT  - replaced by file extension"
     echo "                             %CRC  - replaced by calculated CRC"
+    echo "                             %%    - literal %"
     echo "                           default to '%NAME_[%CRC].%EXT'"
     echo "  -r, --recursive          recursively look for files inside directories"
     echo "  -u, --uppercase          display uppercase CRC code;"
@@ -85,7 +86,7 @@ verify() {
     elif [ "$appendcrc" = "yes" ] && [ "$detected_crc" = "$not_found" ] ; then
         fname="${file_name%.*}"
         fext="${file_name##*.}"
-        mv "$file_name" "$(echo ${append_pattern} | sed "s/\(^\|[^%]\)%NAME/\1${fname}/" | sed "s/\(^\|[^%]\)%CRC/\1${calculated_crc}/" | sed "s/\(^\|[^%]\)%EXT/\1${fext}/" )"
+        mv "$file_name" "$(echo ${append_pattern} | sed "s/\(^\|[^%]\)%NAME/\1${fname}/g" | sed "s/\(^\|[^%]\)%CRC/\1${calculated_crc}/g" | sed "s/\(^\|[^%]\)%EXT/\1${fext}/g" | sed 's/%%/%/g' )"
     fi
 }
 
