@@ -171,25 +171,30 @@ main() {
                 ;;
             -* )
                 optfound="no"
-                if [[ $1 =~ ^(-[giru]*a[giru]*|--append-crc)$ ]] ; then
+                if [[ $1 =~ ^(-[giru]*a[giru]*p?|--append-crc)$ ]] ; then
                     appendcrc="yes"
                     optfound="yes"
                 fi
-                if [[ $1 =~ ^(-[airu]*g[airu]*|--generate-sfv)$ ]] ; then
+                if [[ $1 =~ ^(-[airu]*g[airu]*p?|--generate-sfv)$ ]] ; then
                     generatesfv="yes"
                     optfound="yes"
                 fi
-                if [[ $1 =~ ^(-[agru]*i[agru]*|--ignore-sfv)$ ]] ; then
+                if [[ $1 =~ ^(-[agru]*i[agru]*p?|--ignore-sfv)$ ]] ; then
                     ignoresfv="yes"
                     optfound="yes"
                 fi
-                if [[ $1 =~ ^(-[agiu]*r[agiu]*|--recursive)$ ]] ; then
+                if [[ $1 =~ ^(-[agiu]*r[agiu]*p?|--recursive)$ ]] ; then
                     recursive="yes"
                     optfound="yes"
                 fi
-                if [[ $1 =~ ^(-[agir]*u[agir]*|--uppercase)$ ]] ; then
+                if [[ $1 =~ ^(-[agir]*u[agir]*p?|--uppercase)$ ]] ; then
                     tr_set1='[a-f]'
                     tr_set2='[A-F]'
+                    optfound="yes"
+                fi
+                if [[ $1 =~ ^(-[agiru]*p)$ ]] ; then
+                    append_pattern="$2"
+                    shift
                     optfound="yes"
                 fi
                 if [ "$optfound" = "no" ] ; then
