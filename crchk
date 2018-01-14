@@ -73,7 +73,7 @@ verify() {
     file_name="$@"
     crc_source='filename'
     detected_crc=$(extract_crc "$file_name")
-    calculated_crc=$(crc32 "$file_name" | tr "$tr_set1" "$tr_set2")
+    calculated_crc=$(crc32 "$file_name" | awk '{ print $1; }' | tr "$tr_set1" "$tr_set2")
     status=$(compare $detected_crc $calculated_crc)
     echo "$file_name    $crc_source    $detected_crc    $calculated_crc    $status"
     if [ "$generatesfv" = "yes" ] ; then
@@ -97,7 +97,7 @@ verify_sfv() {
         file_name=$(echo "$@" | sed "s/${re}/\1/")
         crc_source='sfv'
         detected_crc=$(echo "$@" | sed "s/${re}/\2/" | tr "$tr_set1" "$tr_set2")
-        calculated_crc=$(crc32 "$file_name" | tr "$tr_set1" "$tr_set2")
+        calculated_crc=$(crc32 "$file_name" | awk '{ print $1; }' | tr "$tr_set1" "$tr_set2")
         status=$(compare $detected_crc $calculated_crc)
         echo "$file_name    $crc_source    $detected_crc    $calculated_crc    $status"
     fi
