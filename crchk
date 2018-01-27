@@ -84,9 +84,11 @@ verify() {
             echo "$fname $calculated_crc" >> "$sfvdir/$sfvname"
         fi
     elif [ "$appendcrc" = "yes" ] && [ "$detected_crc" = "$not_found" ] ; then
-        fname="${file_name%.*}"
-        fext="${file_name##*.}"
-        mv "$file_name" "$(echo ${append_pattern} | sed "s/\(^\|[^%]\)%NAME/\1${fname}/g" | sed "s/\(^\|[^%]\)%CRC/\1${calculated_crc}/g" | sed "s/\(^\|[^%]\)%EXT/\1${fext}/g" | sed 's/%%/%/g' )"
+        fdirname=$(dirname "$file_name")
+        fbasename=$(basename "$file_name")
+        fname="${fbasename%.*}"
+        fext="${fbasename##*.}"
+        mv "$file_name" "${fdirname}/$(echo ${append_pattern} | sed "s/\(^\|[^%]\)%NAME/\1${fname}/g" | sed "s/\(^\|[^%]\)%CRC/\1${calculated_crc}/g" | sed "s/\(^\|[^%]\)%EXT/\1${fext}/g" | sed 's/%%/%/g' )"
     fi
 }
 
