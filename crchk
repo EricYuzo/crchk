@@ -243,6 +243,6 @@ tr_set1='[A-F]'
 tr_set2='[a-f]'
 
 PROGRAM=$(basename $0)
-VERSION="0.1.0"
+VERSION="0.2.0"
 
 main "$@"
