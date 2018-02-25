@@ -31,7 +31,7 @@ showhelp() {
     echo "  -h, --help               display this help and exit"
     echo "  -i, --ignore-sfv         ignore SFV files"
     echo "  -p, --pattern=PATTERN    PATTERN used to append CRC to file name"
-    echo "                           There are 3 variables you can use:"
+    echo "                           There are some variables you can use:"
     echo "                             %NAME - replaced by file name (without extension)"
     echo "                             %EXT  - replaced by file extension"
     echo "                             %CRC  - replaced by calculated CRC"
