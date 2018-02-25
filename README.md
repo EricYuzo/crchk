@@ -64,7 +64,7 @@ The CRC code will only be detected in the file name, if it follows this naming c
 
 ## Tutorial
 
-### Verify files with CRC code in the file name
+### Verifying files with CRC code in the file name
 
 Run `crchk` passing the file you want to verify:
 
@@ -87,7 +87,7 @@ docs/report1_[bd3f9af6].txt    filename    bd3f9af6    bd3f9af6    ok
 docs/report2_[7d5e06c3].txt    filename    7d5e06c3    7d5e06c3    ok
 ```
 
-### Handle directories recursively
+### Handling directories recursively
 
 Directories are skipped, by default. You can use `-r` option to handle directories recursively:
 
@@ -109,7 +109,7 @@ docs/subdir/report3_[d1f4ad85].txt    filename    d1f4ad85    d1f4ad85    ok
 docs/subdir/report4_[b9b1db50].txt    filename    b9b1db50    84462499    corrupted
 ```
 
-### Display uppercase CRC code
+### Displaying uppercase CRC code
 
 Specify option `-u`, or `--uppercase`:
 
