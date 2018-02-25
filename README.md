@@ -255,3 +255,41 @@ report3.txt  report4.txt  subdir.sfv
 ```
 
 In the example above, the CRC were detected from SFV file. Then the calculated CRC were not appended to the file names. As you can see, there is a corrupted file (`docs/subdir/report4.txt`). It would be a mistake to append the calculated CRC to this kind of file.
+
+#### Changing the naming pattern
+
+You can use `-p` (or `--pattern`) option to specify a new naming pattern when `-a` is also specified.
+
+There are some variables you can use to write the pattern:
+
+* `%NAME`: file name (without extension)
+* `%EXT`: file extension
+* `%CRC`: calculated CRC
+* `%%`: literal %
+
+Any other characters will be treated as raw text.
+
+Example:
+
+```
+$ crchk -aup '%NAME - (%CRC).%EXT' docs/*.txt
+docs/report1.txt    filename    NA    2065074A    NA
+docs/report2.txt    filename    NA    0B485489    NA
+
+$ ls -1 docs/*
+docs/report1 - (2065074A).txt
+docs/report2 - (0B485489).txt
+```
+
+Example using `--pattern`
+
+```
+$ crchk -au --pattern='%NAME - (%CRC).%EXT' docs/*.txt
+docs/report1.txt    filename    NA    2065074A    NA
+docs/report2.txt    filename    NA    0B485489    NA
+
+$ ls -1 docs/*
+docs/report1 - (2065074A).txt
+docs/report2 - (0B485489).txt
+```
+
