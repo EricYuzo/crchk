@@ -22,31 +22,47 @@ showhelp() {
     echo "Usage: $PROGRAM [OPTION]... FILE..."
     echo
     echo "Check FILE integrity based on CRC-32."
+    echo "Directories are skipped, by default. You can use -r option to handle directories recursively."
     echo
     echo "Available options:"
-    echo "  -h, --help       display this help and exit"
-    echo "  -v, --version    display version information and exit"
+    echo "  -a, --append-crc         append calculated CRC to file name"
+    echo "  -f, --file=FILE          verify FILE"
+    echo "  -g, --generate-sfv       generate SFV file"
+    echo "  -h, --help               display this help and exit"
+    echo "  -i, --ignore-sfv         ignore SFV files"
+    echo "  -p, --pattern=PATTERN    PATTERN used to append CRC to file name"
+    echo "                           There are some variables you can use:"
+    echo "                             %NAME - replaced by file name (without extension)"
+    echo "                             %EXT  - replaced by file extension"
+    echo "                             %CRC  - replaced by calculated CRC"
+    echo "                             %%    - literal %"
+    echo "                           default to '%NAME_[%CRC].%EXT'"
+    echo "  -r, --recursive          recursively look for files inside directories"
+    echo "  -u, --uppercase          display uppercase CRC code;"
+    echo "                           if -a is specified, append uppercase CRC to file name"
+    echo "  -v, --version            display version information and exit"
 }
 
 showversion() {
-    echo "$PROGRAM $version"
+    echo "$PROGRAM version $VERSION"
 }
 
 extract_crc() {
-    echo "$1" | grep -q '^.*[[({][0-9A-Fa-f]\{8\}[])}]\(\.[^.]\+\)\?$'
+    regex='^.*[[({]\([0-9A-Fa-f]\{8\}\)[])}].*$'
+    echo "$1" | grep -q "$regex"
     if [ $? -eq 0 ] ; then
-        echo "$1" | tr '[A-F]' '[a-f]' | sed 's/.*[[({]\([0-9a-f]\{8\}\)[])}]\(\.[^.]\+\)\?/\1/'
+        echo "$1" | tr "$tr_set1" "$tr_set2" | sed "s/${regex}/\1/"
     else
         echo "$not_found"
     fi
 }
 
 compare() {
-    crc_name=$1
-    crc_calc=$2
-    if [ "$crc_name" = "$crc_calc" ] ; then
+    detected_crc=$1
+    calculated_crc=$2
+    if [ "$detected_crc" = "$calculated_crc" ] ; then
         echo "ok"
-    elif [ "$crc_name" = "$not_found" ] ; then
+    elif [ "$detected_crc" = "$not_found" ] ; then
         echo "$not_found"
     else
         echo "corrupted"
@@ -54,11 +70,75 @@ compare() {
 }
 
 verify() {
-    name="$@"
-    crc_name=`extract_crc "$name"`
-    crc_calc=`crc32 "$name"`
-    status=`compare $crc_name $crc_calc`
-    echo "$name    $crc_name    $crc_calc    $status"
+    file_name="$@"
+    crc_source='filename'
+    detected_crc=$(extract_crc "$file_name")
+    calculated_crc=$(crc32 "$file_name" | awk '{ print $1; }' | tr "$tr_set1" "$tr_set2")
+    status=$(compare $detected_crc $calculated_crc)
+    echo "$file_name    $crc_source    $detected_crc    $calculated_crc    $status"
+    if [ "$generatesfv" = "yes" ] ; then
+        sfvdir=$(dirname "$file_name")
+        sfvname=$(basename "$sfvdir").sfv
+        if [ ! -f  "$sfvdir/$sfvname" ] || [ $(date +%s -r "$sfvdir/$sfvname") -ge $exectime  ] ; then
+            fname=$(basename "$file_name")
+            echo "$fname $calculated_crc" >> "$sfvdir/$sfvname"
+        fi
+    elif [ "$appendcrc" = "yes" ] && [ "$detected_crc" = "$not_found" ] ; then
+        fdirname=$(dirname "$file_name")
+        fbasename=$(basename "$file_name")
+        fname="${fbasename%.*}"
+        fext="${fbasename##*.}"
+        mv "$file_name" "${fdirname}/$(echo ${append_pattern} | sed "s/\(^\|[^%]\)%NAME/\1${fname}/g" | sed "s/\(^\|[^%]\)%CRC/\1${calculated_crc}/g" | sed "s/\(^\|[^%]\)%EXT/\1${fext}/g" | sed 's/%%/%/g' )"
+    fi
+}
+
+verify_sfv() {
+    re='^\(.\+\) \([0-9A-Fa-f]\{8\}\)\s*$'
+    echo "$@" | grep -q "$re"
+    if [ $? -eq 0 ] ; then # ignore invalid SFV lines
+        file_name=$(echo "$@" | sed "s/${re}/\1/")
+        crc_source='sfv'
+        detected_crc=$(echo "$@" | sed "s/${re}/\2/" | tr "$tr_set1" "$tr_set2")
+        calculated_crc=$(crc32 "$file_name" | awk '{ print $1; }' | tr "$tr_set1" "$tr_set2")
+        status=$(compare $detected_crc $calculated_crc)
+        echo "$file_name    $crc_source    $detected_crc    $calculated_crc    $status"
+    fi
+}
+
+process() {
+    for f in "$@"
+    do
+        if [ -d "$f" ] && [ "$recursive" = "yes" ] ; then
+            if [[ "$f" == */ ]] ; then
+                f=${f%/*}
+            fi
+            if [ "$ignoresfv" = "no" ] && [ -f "$f"/*.sfv ] ; then
+                process "$f"/*.sfv "$f"/*/
+            else
+                process "$f"/*
+            fi
+        elif [ -f "$f" ] ; then
+            if [[ "$f" == *.sfv ]] ; then
+                if [ "$ignoresfv" = "no" ] ; then
+                    read_sfv "$f"
+                fi
+            else
+                verify $f
+            fi
+        fi
+    done
+}
+
+read_sfv() {
+    OLDIFS=$IFS
+    IFS='
+'
+    base=$(dirname "$1")
+    for l in $(cat "$1" | grep -v '^\s*;')
+    do
+        verify_sfv "$base/$l"
+    done
+    IFS=$OLDIFS
 }
 
 main() {
@@ -69,34 +149,100 @@ main() {
     while [ $# -gt 0 ]
     do
         case $1 in
-            -h | --help )
-                showhelp
-                exit 0
+            -f )
+                positional+=("$2")
+                shift
                 ;;
-            -v | --version )
-                showversion
-                exit 0
+            --file=* )
+                positional+=("${1#*=}")
                 ;;
-            *)
+            -h | --help | '-?' | '--?' )
+                hset="yes"
+                ;;
+            -p )
+                append_pattern="$2"
+                shift
+                ;;
+            --pattern=* )
+                append_pattern="${1#*=}"
+                ;;
+            -v | --ver | --version )
+                vset="yes"
+                ;;
+            -* )
+                optfound="no"
+                if [[ $1 =~ ^(-[giru]*a[giru]*[fp]?|--append-crc)$ ]] ; then
+                    appendcrc="yes"
+                    optfound="yes"
+                fi
+                if [[ $1 =~ ^(-[airu]*g[airu]*[fp]?|--generate-sfv)$ ]] ; then
+                    generatesfv="yes"
+                    optfound="yes"
+                fi
+                if [[ $1 =~ ^(-[agru]*i[agru]*[fp]?|--ignore-sfv)$ ]] ; then
+                    ignoresfv="yes"
+                    optfound="yes"
+                fi
+                if [[ $1 =~ ^(-[agiu]*r[agiu]*[fp]?|--recursive)$ ]] ; then
+                    recursive="yes"
+                    optfound="yes"
+                fi
+                if [[ $1 =~ ^(-[agir]*u[agir]*[fp]?|--uppercase)$ ]] ; then
+                    tr_set1='[a-f]'
+                    tr_set2='[A-F]'
+                    optfound="yes"
+                fi
+                if [[ $1 =~ ^(-[agiru]*f)$ ]] ; then
+                    positional+=("$2")
+                    shift
+                    hset="no"
+                    vset="no"
+                    optfound="yes"
+                fi
+                if [[ $1 =~ ^(-[agiru]*p)$ ]] ; then
+                    append_pattern="$2"
+                    shift
+                    optfound="yes"
+                fi
+                if [ "$optfound" = "no" ] ; then
+                    error "Unrecognized option: $1"
+                fi
+                ;;
+            * )
                 positional+=("$1")
                 ;;
         esac
         shift
     done
+    if [ "$hset" = "yes" ] ; then
+        showhelp
+        exit 0
+    elif [ "$vset" = "yes" ] ; then
+        showversion
+        exit 0
+    fi
     set -- "${positional[@]}"
     # }
 
-
-    for f in "$@"
-    do
-        if [ -f "$f" ] ; then
-            verify $f
-        fi
-    done
+    process "$@"
 }
 
+
+exectime=$(date +%s)
+
+appendcrc="no"
+generatesfv="no"
+ignoresfv="no"
+recursive="no"
+hset="no"
+vset="no"
+
+append_pattern='%NAME_[%CRC].%EXT'
 not_found='NA'
+tr_set1='[A-F]'
+tr_set2='[a-f]'
+
 PROGRAM=$(basename $0)
-version="0.1.0"
+VERSION="0.2.0"
 
 main "$@"
